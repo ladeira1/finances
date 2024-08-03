@@ -2,7 +2,7 @@ import React from "react";
 import { TransactionList } from "./components/Transactions/TransactionList";
 
 export const App = () => (
-  <div className="font-roboto">
+  <div className="font-roboto w-full h-[100vh] flex items-center justify-center">
     <TransactionList />
   </div>
 );
