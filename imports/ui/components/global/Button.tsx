@@ -10,8 +10,12 @@ const classesByVariant: { [key in ButtonVariant]: string } = {
   solid: "bg-black text-white",
 };
 
-export const Button = ({ variant = "solid", className, ...rest }: ButtonProps) => {
+export const Button = ({ variant = "solid", type = "button", className, ...rest }: ButtonProps) => {
   return (
-    <button className={`py-2 px-4 rounded ${classesByVariant[variant]} ${className}`} {...rest} />
+    <button
+      type={type}
+      className={`py-2 px-4 h-10 flex items-center justify-center rounded ${classesByVariant[variant]} ${className}`}
+      {...rest}
+    />
   );
 };

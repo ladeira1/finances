@@ -7,6 +7,14 @@ module.exports = {
         roboto: "Roboto",
       },
     },
+    translate: {
+      x: {
+        "50-negative": "translateX(-50%)",
+      },
+      y: {
+        "50-negative": "translateY(-50%)",
+      },
+    },
   },
   plugins: [],
 };
