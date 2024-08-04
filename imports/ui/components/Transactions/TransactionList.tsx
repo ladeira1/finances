@@ -24,8 +24,14 @@ export const TransactionList = () => {
     pageSize: pagination.pageSize,
   });
 
-  const data = useFind(() => {
-    return Collections.Transactions.find();
+  const data = useTracker(() => {
+    const transactions = Collections.Transactions.find().fetch();
+    const totalValue = transactions.reduce((acc, curr) => {
+      if (curr.type === "gain") return acc + Number(curr.value);
+      return acc - Number(curr.value);
+    }, 0);
+
+    return { transactions, totalValue };
   });
 
   if (isLoading()) {
@@ -40,10 +46,11 @@ export const TransactionList = () => {
         </div>
 
         <h1 className="text-2xl">My transactions</h1>
+        <p className="text-2xl">Total value: ${data?.totalValue}</p>
 
         <div className="flex flex-col gap-4">
           <ul className="w-full flex flex-col gap-2 border-solid border-2 border-black rounded p-4">
-            {data?.map((transaction) => (
+            {data?.transactions?.map((transaction) => (
               <li className="w-full" key={transaction._id}>
                 <Transaction transaction={transaction}></Transaction>
               </li>

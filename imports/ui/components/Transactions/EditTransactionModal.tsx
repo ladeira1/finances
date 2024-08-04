@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal } from "../global/Modal";
@@ -36,6 +36,7 @@ export const EditTransactionModal = ({
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
     mode: "onBlur",
@@ -56,6 +57,10 @@ export const EditTransactionModal = ({
     reset();
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    setValue("type", transaction.type);
+  }, [transaction.type]);
 
   return (
     <Modal isOpen={isModalOpen}>

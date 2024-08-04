@@ -13,8 +13,8 @@ export const Pagination = ({ currentPage, totalPages, selectPage }: PaginationPr
         <li
           key={index}
           className={`${
-            currentPage === index + 1 ? "bg-slate-300" : "bg-white"
-          } w-8 h-8 rounded-full flex items-center justify-center`}
+            currentPage === index + 1 ? "border-black" : "border-white"
+          } w-8 h-8 rounded-full flex items-center justify-center border duration-150 hover:opacity-50 cursor-pointer`}
           onClick={() => selectPage(index + 1)}
         >
           {index + 1}
