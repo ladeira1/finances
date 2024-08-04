@@ -13,7 +13,7 @@ export function listTransactions({ currentPage, pageSize }: ListTransactionsPara
 
   const filter: Record<string, any> = {
     sort: { timestamp: -1 },
-    skip: currentPage * pageSize - pageSize,
+    skip: Math.max(currentPage * pageSize - pageSize, 0),
     limit: pageSize,
   };
 

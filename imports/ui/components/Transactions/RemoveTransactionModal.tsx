@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "../global/Modal";
 import { Button } from "../global/Button";
-import { REMOVE_TRANSACTION_METHOD } from "../../../api/methods/transactions/removeTransaction";
+import { METHODS } from "../../../api/methods";
 
 type RemoveTransactionModalProps = {
   transactionId: string;
@@ -15,7 +15,7 @@ export const RemoveTransactionModal = ({
   setIsModalOpen,
 }: RemoveTransactionModalProps) => {
   const onRemoveTransaction = async () => {
-    await Meteor.callAsync(REMOVE_TRANSACTION_METHOD, { _id: transactionId });
+    await Meteor.callAsync(METHODS.REMOVE_TRANSACTION_METHOD, { _id: transactionId });
   };
 
   return (

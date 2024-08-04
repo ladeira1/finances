@@ -57,7 +57,7 @@ const reducer = (state: PaginationState, action: PaginationActions) => {
     }
     case PaginationActionsTypes.UPDATE_TOTAL_PAGES: {
       if (action.payload < state.currentPage) {
-        return { ...state, totalPages: action.payload, currentPage: action.payload };
+        return { ...state, totalPages: action.payload, currentPage: Math.max(action.payload, 1) };
       }
 
       return { ...state, totalPages: action.payload };

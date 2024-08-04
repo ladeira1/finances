@@ -2,25 +2,24 @@ import { useFind, useSubscribe, useTracker } from "meteor/react-meteor-data";
 import React, { useState } from "react";
 import { Collections } from "../../../api/collections";
 import { Transaction } from "./Transaction";
-import { LIST_TRANSACTIONS_PUBLICATION } from "../../../api/publications/transactions/listTransactions";
 import { Button } from "../global/Button";
 import { AddTransactionModal } from "./AddTransactionModal";
 import { Pagination } from "../global/Pagination";
 import { PaginationActionsTypes, usePagination } from "../../../hooks/usePagination";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { COUNT_TRANSACTIONS_PUBLICATION } from "../../../api/publications/transactions/countTransactions";
+import { PUBLICATIONS } from "../../../api/publications";
 
 export const TransactionList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useSubscribe(COUNT_TRANSACTIONS_PUBLICATION);
+  useSubscribe(PUBLICATIONS.COUNT_TRANSACTIONS_PUBLICATION);
   const totalItems = useTracker(() => {
-    return Counts.get(COUNT_TRANSACTIONS_PUBLICATION);
+    return Counts.get(PUBLICATIONS.COUNT_TRANSACTIONS_PUBLICATION);
   });
 
   const { pagination, changePagination } = usePagination({ totalItems });
 
-  const isLoading = useSubscribe(LIST_TRANSACTIONS_PUBLICATION, {
+  const isLoading = useSubscribe(PUBLICATIONS.LIST_TRANSACTIONS_PUBLICATION, {
     currentPage: pagination.currentPage,
     pageSize: pagination.pageSize,
   });

@@ -9,7 +9,8 @@ import { z } from "zod";
 import { METHODS } from "../../../api/methods";
 import { Select } from "../global/Select";
 
-type AddTransactionModalProps = {
+type EditTransactionModalProps = {
+  transaction: Transaction;
   isModalOpen: boolean;
   setIsModalOpen: (status: boolean) => void;
 };
@@ -25,19 +26,28 @@ const schema = z.object({
   value: z.string(),
 });
 
-export const AddTransactionModal = ({ isModalOpen, setIsModalOpen }: AddTransactionModalProps) => {
+export const EditTransactionModal = ({
+  transaction,
+  isModalOpen,
+  setIsModalOpen,
+}: EditTransactionModalProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
     mode: "onBlur",
+    defaultValues: {
+      title: transaction.title,
+      type: transaction.type,
+      value: transaction.value,
+    },
   });
 
   const onSubmit = async (data: Inputs) => {
-    await Meteor.callAsync(METHODS.CREATE_TRANSACTION_METHOD, data);
+    await Meteor.callAsync(METHODS.EDIT_TRANSACTION_METHOD, { _id: transaction._id, ...data });
     reset();
     setIsModalOpen(false);
   };
@@ -50,7 +60,7 @@ export const AddTransactionModal = ({ isModalOpen, setIsModalOpen }: AddTransact
   return (
     <Modal isOpen={isModalOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="min-w-[18.75rem]">
-        <h2 className="text-2xl mb-4">Add a transaction</h2>
+        <h2 className="text-2xl mb-4">Edit a transaction</h2>
         <div className="flex flex-col gap-3 mb-8">
           <Input label="Title" {...register("title")} error={errors?.title?.message} />
           <Select
@@ -75,7 +85,7 @@ export const AddTransactionModal = ({ isModalOpen, setIsModalOpen }: AddTransact
           <Button variant="outlined" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit">Add transaction</Button>
+          <Button type="submit">Edit transaction</Button>
         </div>
       </form>
     </Modal>
