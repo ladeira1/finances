@@ -7,6 +7,7 @@ import { Button } from "../global/Button";
 import { Transaction } from "../../../api/collections/transactions";
 import { z } from "zod";
 import { METHODS } from "../../../api/methods";
+import { Select } from "../global/Select";
 
 type AddTransactionModalProps = {
   isModalOpen: boolean;
@@ -20,7 +21,7 @@ const schema = z.object({
     required_error: "Title is required",
     invalid_type_error: "Title must be a string",
   }),
-  type: z.string(),
+  type: z.union([z.literal("gain"), z.literal("expense")]),
   value: z.string(),
 });
 
@@ -28,17 +29,15 @@ export const AddTransactionModal = ({ isModalOpen, setIsModalOpen }: AddTransact
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
+    mode: "onBlur",
   });
 
-  console.log("err", errors);
-
   const onSubmit = async (data: Inputs) => {
-    console.log("dta", data);
     await Meteor.callAsync(METHODS.CREATE_TRANSACTION_METHOD, data);
+    setIsModalOpen(false);
   };
 
   return (
@@ -46,10 +45,23 @@ export const AddTransactionModal = ({ isModalOpen, setIsModalOpen }: AddTransact
       <form onSubmit={handleSubmit(onSubmit)} className="min-w-[18.75rem]">
         <h2 className="text-2xl mb-4">Add a transaction</h2>
         <div className="flex flex-col gap-3 mb-8">
-          <Input label="Title" {...register("title")} />
-          {/* change for a select */}
-          <Input label="Type" {...register("type")} />
-          <Input label="Value" {...register("value")} type="number" />
+          <Input label="Title" {...register("title")} error={errors?.title?.message} />
+          <Select
+            label="Type"
+            {...register("type")}
+            error={errors?.type?.message}
+            options={[
+              { value: "gain", label: "Gain" },
+              { value: "expense", label: "Expense" },
+            ]}
+            defaultValue="gain"
+          />
+          <Input
+            label="Value"
+            {...register("value")}
+            type="number"
+            error={errors?.value?.message}
+          />
         </div>
 
         <div className="flex items-end justify-end ml-auto gap-2">
