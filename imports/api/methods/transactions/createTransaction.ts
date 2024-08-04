@@ -8,7 +8,6 @@ export const createTransaction = async ({
   type,
   value,
 }: Omit<Transaction, "_id" | "createdAt" | "updatedAt">) => {
-  console.log("ddd", title, type, value);
   const id = await Collections.Transactions.insertAsync({ title, type, value });
 
   return id;

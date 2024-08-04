@@ -11,9 +11,14 @@ import {
   COUNT_TRANSACTIONS_PUBLICATION,
   countTransactions,
 } from "../imports/api/publications/transactions/countTransactions";
+import {
+  REMOVE_TRANSACTION_METHOD,
+  removeTransaction,
+} from "../imports/api/methods/transactions/removeTransaction";
 
 Meteor.methods({
   [CREATE_TRANSACTION_METHOD]: createTransaction,
+  [REMOVE_TRANSACTION_METHOD]: removeTransaction,
 });
 
 Meteor.startup(async () => {

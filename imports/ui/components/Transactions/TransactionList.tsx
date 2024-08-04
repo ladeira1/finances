@@ -46,7 +46,7 @@ export const TransactionList = () => {
           <ul className="w-full flex flex-col gap-2 border-solid border-2 border-black rounded p-4">
             {data?.map((transaction) => (
               <li className="w-full" key={transaction._id}>
-                <Transaction>{`${transaction.title} - ${transaction.value} - ${transaction.type}`}</Transaction>
+                <Transaction transaction={transaction}></Transaction>
               </li>
             ))}
           </ul>
